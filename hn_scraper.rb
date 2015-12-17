@@ -15,10 +15,20 @@ post.url = ARGV[0]
 post.item_id = ARGV[0].split('id=')[1]
 
 # Retrieve web page
-doc = Nokogiri::HTML(open(ARGV[0]))
+begin
+  doc = Nokogiri::HTML(open(ARGV[0]))
+rescue SocketError => msg
+  puts msg
+  exit
+end
 
 # Set post attributes
-post.title = doc.search('td.title > a')[0].inner_text #.map { |link| link.inner_text}
+begin
+  post.title = doc.search('td.title > a')[0].inner_text
+rescue
+  puts "Are you sure this is a HackerNews post?"
+  exit
+end
 
 ## Get comments
 doc.search('.athing').map do |thing|
