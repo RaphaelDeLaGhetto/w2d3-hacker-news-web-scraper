@@ -2,6 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 require './lib/post'
 require './lib/comment'
+require 'colorize'
 
 unless ARGV.length == 1
   puts "Usage: ruby hn_scraper.rb input-uri\n"
@@ -27,6 +28,6 @@ doc.search('.athing').map do |thing|
   post.comments << comment
 end
 
-puts "Post title: #{post.title}"
-puts "Number of comments: #{post.comments.count}"
+puts "Post title: #{post.title.colorize(:blue)}"
+puts "Number of comments: #{post.comments.count.to_s.colorize(:blue)}"
 
